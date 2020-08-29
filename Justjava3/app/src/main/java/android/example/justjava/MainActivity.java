@@ -83,15 +83,16 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is called when the order button is clicked.
      */
+    @SuppressLint("StringFormatInvalid")
     public String createOrderSummary(String name, int price, boolean addWhippedCream, boolean addChocolate) {
 
         String priceMessage ="";
-        priceMessage += "Name: " + name;
-        priceMessage += "\nAdd Whipped Cream ? " + addWhippedCream;
-        priceMessage += "\nAdd Chocolate ? " + addChocolate;
-        priceMessage += "\nQuantity " + quantity;
-        priceMessage += "\nTotal:" + price;
-        priceMessage +=  "\nThank you !";
+        priceMessage += getString(R.string.order_summary_name, name);
+        priceMessage += "\n" + getString(R.string.order_summary_whipped_cream, addWhippedCream);
+        priceMessage += "\n" + getString(R.string.order_summary_chocolate, addChocolate);
+        priceMessage += "\n" + getString(R.string.Quantity, quantity);
+        priceMessage += "\n" + getString(R.string.order_summary_price, price);
+        priceMessage +=  "\n" + getString(R.string.thank_you);
         return priceMessage;
     }
 
