@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class MainActivity extends AppCompatActivity {
     CheckBox checkBox;
+
 
     @SuppressLint("WrongViewCast")
     @Override
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
     }
 
 
@@ -62,8 +66,9 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is called when the order button is clicked.
      */
-    public String createOrderSummary(int price, boolean addWhippedCream, boolean addChocolate) {
-        String priceMessage = "Name: Anvar Ziyodov";
+    public String createOrderSummary(String name, int price, boolean addWhippedCream, boolean addChocolate) {
+        String priceMessage ="";
+        priceMessage += "Name: " + name;
         priceMessage += "\nAdd Whipped Cream ? " + addWhippedCream;
         priceMessage += "\nAdd Chocolate ? " + addChocolate;
         priceMessage += "\nQuantity " +quantity;
@@ -73,6 +78,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void submitOrder(View view) {
+        EditText namefield = findViewById(R.id.nameInput);
+        String name  = namefield.getText().toString();
+        Log.v("MainActivity", "Name: " + name);
 
         CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkBox);
         boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
@@ -83,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
         Log.v("Main Activity", "Has Chocolate : " + hasChocoalte);
 
         int price = calculatePrice();
-        displayMessage(createOrderSummary(price, hasWhippedCream, hasChocoalte));
+        displayMessage(createOrderSummary(name, price, hasWhippedCream, hasChocoalte));
+
+
 }
 
     private int calculatePrice() {
