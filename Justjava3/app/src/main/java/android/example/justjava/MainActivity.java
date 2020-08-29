@@ -13,6 +13,9 @@ package android.example.justjava;
 import java.text.NumberFormat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,25 +56,40 @@ public class MainActivity extends AppCompatActivity {
     int quantity =0;
 
     public void decrement(View view) {
+
+        if ( quantity == 1) {
+            Toast toast = Toast.makeText(this, " You can't have less !", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
         quantity = quantity -1;
         displayQuantity(quantity);
     }
 
 
     public void increment(View view) {
+
+        if (quantity ==100 ) {
+            // show an error message sa a toast
+            Toast toast = Toast.makeText(this, " You can't have more orders !", Toast.LENGTH_SHORT);
+            toast.show();
+            return;
+        }
         quantity = quantity +1;
         displayQuantity(quantity);
+
     }
 
     /**
      * This method is called when the order button is clicked.
      */
     public String createOrderSummary(String name, int price, boolean addWhippedCream, boolean addChocolate) {
+
         String priceMessage ="";
         priceMessage += "Name: " + name;
         priceMessage += "\nAdd Whipped Cream ? " + addWhippedCream;
         priceMessage += "\nAdd Chocolate ? " + addChocolate;
-        priceMessage += "\nQuantity " +quantity;
+        priceMessage += "\nQuantity " + quantity;
         priceMessage += "\nTotal:" + price;
         priceMessage +=  "\nThank you !";
         return priceMessage;
@@ -82,22 +100,40 @@ public class MainActivity extends AppCompatActivity {
         String name  = namefield.getText().toString();
         Log.v("MainActivity", "Name: " + name);
 
+
         CheckBox whippedCreamCheckBox = (CheckBox) findViewById(R.id.whipped_cream_checkBox);
         boolean hasWhippedCream = whippedCreamCheckBox.isChecked();
         Log.v("MainActivity", "Has whipped Cream : "+ hasWhippedCream);
+
 
         CheckBox chocolateCheckBox = (CheckBox) findViewById(R.id.chocolate_checkbox);
         boolean hasChocoalte = chocolateCheckBox.isChecked();
         Log.v("Main Activity", "Has Chocolate : " + hasChocoalte);
 
-        int price = calculatePrice();
-        displayMessage(createOrderSummary(name, price, hasWhippedCream, hasChocoalte));
 
+        int price = calculatePrice( hasWhippedCream, hasChocoalte);
+        String priceMessage = (createOrderSummary(name, price, hasWhippedCream, hasChocoalte));
+        displayMessage(priceMessage);
+
+
+//
 
 }
+    /**
+     * This method Calculates the price for the order
+     * @param  addChocolate is whether or not the user wants chocolate.
+     * @param  addWhippedCream addChocolate is whether or not the user wants whipped cream.
+     */
 
-    private int calculatePrice() {
-        return quantity * 5 ;
+    private int calculatePrice(boolean addWhippedCream, boolean addChocolate) {
+        int sum = 5;
+        if (addChocolate) {
+            sum  =sum + 2;
+        }
+        if (addWhippedCream) {
+            sum  = sum + 1;
+        }
+        return quantity * sum ;
 
     }
 
